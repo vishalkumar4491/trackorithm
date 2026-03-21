@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: track
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/trackorithm
+    username: postgres
+    password: root1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    callback-locations: classpath:db/migrations
+    baseline-on-migrate: true
+    baseline-version: 1
+
+server:
+  port: 8081
+
