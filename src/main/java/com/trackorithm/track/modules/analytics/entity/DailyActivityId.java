@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Embeddable
 @Getter
@@ -15,6 +16,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DailyActivityId implements Serializable {
-    private Long userId;
+    private UUID userId;
     private LocalDate date;
 }

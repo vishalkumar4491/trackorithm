@@ -5,7 +5,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/trackorithm
     username: postgres
-    password: root1234
+    # Prefer env vars in real setups: DB_PASSWORD, DB_USERNAME, etc.
+    password: ${DB_PASSWORD:root1234}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,13 +21,14 @@ spring:
     locations: classpath:db/migrations
     baseline-on-migrate: true
     baseline-version: 1
-  security:
-    user:
-      name: user
-      password: pass
 
 server:
   port: 8081
 
-# security config
-
+app:
+  security:
+    jwt:
+      # Dev-only default. For production set JWT_SECRET to a long random value (>= 32 chars).
+      secret: ${JWT_SECRET:change-me-change-me-change-me-change-me}
+      issuer: ${JWT_ISSUER:trackorithm}
+      access-token-ttl: ${JWT_ACCESS_TTL:PT2H}

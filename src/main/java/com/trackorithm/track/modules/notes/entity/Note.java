@@ -11,8 +11,9 @@ import lombok.Setter;
 @Table(name = "notes",
         uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "problem_id"}),
         indexes = {
-                @Index(name = "idx_notes_user_poblem", columnList = "user_id, problem_id")
+                @Index(name = "idx_notes_user_problem", columnList = "user_id, problem_id")
         })
+@Getter
 @Setter
 public class Note extends BaseEntity {
 
