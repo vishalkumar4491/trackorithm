@@ -9,7 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "sheets")
+@Table(name = "sheets",
+        indexes = @Index(name = "idx_sheets_created_by", columnList = "created_by"))
 @Getter
 @Setter
 public class Sheet extends BaseEntity {

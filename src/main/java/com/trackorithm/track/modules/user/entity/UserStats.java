@@ -21,9 +21,11 @@ public class UserStats {
 
     private Integer totalProblemsSolved;
 
+    private Integer totalTimeSpent;
+
     private Integer currentStreak;
 
     private Integer maxStreak;
 
-    private LocalDate lastActivityDate;
+    private LocalDate lastActiveDate;
 }

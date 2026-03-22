@@ -9,7 +9,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "problems")
+@Table(name = "problems",
+        indexes = {
+                @Index(name = "idx_problems_topic_order", columnList = "topic_id, order_index"),
+                @Index(name = "idx_problems_difficulty", columnList = "difficulty")
+        })
 @Getter
 @Setter
 public class Problem extends BaseEntity {
@@ -36,5 +40,7 @@ public class Problem extends BaseEntity {
     private Integer orderIndex;
 
     private Integer frequencyScore;
+
+    private Double acceptanceRate;
 
 }

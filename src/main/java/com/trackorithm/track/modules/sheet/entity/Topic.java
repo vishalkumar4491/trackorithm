@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "topics")
+@Table(name = "topics",
+        indexes = @Index(name = "idx_topics_sheet_order", columnList = "sheet_id, order_index"))
 @Getter
 @Setter
 public class Topic extends BaseEntity {

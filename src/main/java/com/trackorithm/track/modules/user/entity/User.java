@@ -5,8 +5,13 @@ import com.trackorithm.track.common.enums.AuthProvider;
 import com.trackorithm.track.common.enums.UserStatus;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+        indexes = {
+                @Index(name = "idx_users_email", columnList = "email")
+        })
 public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true)
@@ -27,4 +32,6 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
+
+    private LocalDateTime lastLoginAt;
 }
