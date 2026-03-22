@@ -17,10 +17,16 @@ spring:
         format_sql: true
   flyway:
     enabled: true
-    callback-locations: classpath:db/migrations
+    locations: classpath:db/migrations
     baseline-on-migrate: true
     baseline-version: 1
+  security:
+    user:
+      name: user
+      password: pass
 
 server:
   port: 8081
+
+# security config
 
