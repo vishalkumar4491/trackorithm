@@ -5,16 +5,14 @@ import com.trackorithm.track.modules.auth.dto.LoginRequest;
 import com.trackorithm.track.modules.auth.dto.RegisterRequest;
 import com.trackorithm.track.modules.auth.service.AuthService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@AllArgsConstructor
 public class AuthController {
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/register")
     public AuthResponse register(@Valid @RequestBody RegisterRequest request) {

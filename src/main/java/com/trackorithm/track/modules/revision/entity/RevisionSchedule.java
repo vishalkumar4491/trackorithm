@@ -7,6 +7,8 @@ import com.trackorithm.track.modules.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +31,8 @@ public class RevisionSchedule extends BaseEntity {
     private LocalDate scheduledDate;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "status", columnDefinition = "revision_status_enum")
     private RevisionStatus status;
 
     private LocalDateTime completedAt;

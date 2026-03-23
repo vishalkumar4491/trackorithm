@@ -7,6 +7,8 @@ import com.trackorithm.track.modules.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +30,8 @@ public class UserProblemStatus extends BaseEntity {
     private Problem problem;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "status", columnDefinition = "problem_status_enum")
     private ProblemStatus status;
 
     private Integer attemptCount;

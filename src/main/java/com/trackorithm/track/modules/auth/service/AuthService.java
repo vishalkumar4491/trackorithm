@@ -10,6 +10,7 @@ import com.trackorithm.track.modules.user.entity.User;
 import com.trackorithm.track.modules.user.repo.UserRepository;
 import com.trackorithm.track.security.JwtProperties;
 import com.trackorithm.track.security.UserPrincipal;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,26 +26,13 @@ import java.time.Instant;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtEncoder jwtEncoder;
     private final JwtProperties jwtProperties;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-
-    public AuthService(
-            AuthenticationManager authenticationManager,
-            JwtEncoder jwtEncoder,
-            JwtProperties jwtProperties,
-            PasswordEncoder passwordEncoder,
-            UserRepository userRepository
-    ) {
-        this.authenticationManager = authenticationManager;
-        this.jwtEncoder = jwtEncoder;
-        this.jwtProperties = jwtProperties;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {

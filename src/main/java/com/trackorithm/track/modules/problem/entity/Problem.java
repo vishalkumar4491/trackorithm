@@ -7,6 +7,8 @@ import com.trackorithm.track.modules.sheet.entity.Topic;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "problems",
@@ -28,6 +30,8 @@ public class Problem extends BaseEntity {
     private String slug;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "platform", columnDefinition = "platform_enum")
     private Platform platform;
 
     private String externalProblemId;
@@ -35,6 +39,8 @@ public class Problem extends BaseEntity {
     private String problemUrl;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "difficulty", columnDefinition = "difficulty_enum")
     private Difficulty difficulty;
 
     private Integer orderIndex;

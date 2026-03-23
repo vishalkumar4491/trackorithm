@@ -7,6 +7,8 @@ import com.trackorithm.track.modules.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "activity_log",
@@ -19,6 +21,8 @@ public class ActivityLog extends BaseEntity {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "action_type", columnDefinition = "activity_type_enum")
     private ActivityType activityType;
 
     @ManyToOne(fetch = FetchType.LAZY)

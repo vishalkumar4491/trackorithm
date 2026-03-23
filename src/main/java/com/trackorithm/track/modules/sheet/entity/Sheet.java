@@ -7,6 +7,8 @@ import com.trackorithm.track.modules.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "sheets",
@@ -20,9 +22,13 @@ public class Sheet extends BaseEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "type", columnDefinition = "sheet_type_enum")
     private SheetType type;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "visibility", columnDefinition = "visibility_enum")
     private Visibility visibility;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -7,6 +7,8 @@ import com.trackorithm.track.common.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -36,14 +38,16 @@ public class User extends BaseEntity {
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "auth_provider_enum")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "auth_provider", columnDefinition = "auth_provider_enum")
     private AuthProvider authProvider;
 
     @Column(name = "provider_id")
     private String providerId;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "user_status_enum")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "status", columnDefinition = "user_status_enum")
     private UserStatus status;
 
     @Enumerated(EnumType.STRING)

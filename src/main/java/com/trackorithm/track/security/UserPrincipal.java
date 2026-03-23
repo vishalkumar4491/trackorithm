@@ -2,6 +2,7 @@ package com.trackorithm.track.security;
 
 import com.trackorithm.track.common.enums.Role;
 import com.trackorithm.track.modules.user.entity.User;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,18 +11,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
     private final UUID id;
     private final String username;
     private final String passwordHash;
     private final Role role;
-
-    public UserPrincipal(UUID id, String username, String passwordHash, Role role) {
-        this.id = id;
-        this.username = username;
-        this.passwordHash = passwordHash;
-        this.role = role;
-    }
 
     public static UserPrincipal from(User user) {
         // Spring Security needs a non-null username; fall back to email.
