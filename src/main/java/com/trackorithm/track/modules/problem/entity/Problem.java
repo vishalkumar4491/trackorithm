@@ -3,7 +3,7 @@ package com.trackorithm.track.modules.problem.entity;
 import com.trackorithm.track.common.entity.BaseEntity;
 import com.trackorithm.track.common.enums.Difficulty;
 import com.trackorithm.track.common.enums.Platform;
-import com.trackorithm.track.modules.sheet.entity.Topic;
+import com.trackorithm.track.modules.topic.entity.Topic;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
