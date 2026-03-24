@@ -13,8 +13,8 @@ public final class SheetMapper {
                 sheet.getName(),
                 sheet.getDescription(),
                 sheet.getType(),
-                sheet.getVisibility()
+                sheet.getVisibility(),
+                sheet.getSourceUrl()
         );
     }
 }
-

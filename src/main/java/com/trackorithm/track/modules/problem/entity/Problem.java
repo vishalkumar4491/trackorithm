@@ -20,10 +20,6 @@ import org.hibernate.type.SqlTypes;
 @Setter
 public class Problem extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "topic_id", nullable = false)
-    private Topic topic;
-
     private String title;
 
     @Column(unique = true)
@@ -42,8 +38,6 @@ public class Problem extends BaseEntity {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "difficulty", columnDefinition = "difficulty_enum")
     private Difficulty difficulty;
-
-    private Integer orderIndex;
 
     private Integer frequencyScore;
 

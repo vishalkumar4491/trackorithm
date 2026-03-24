@@ -3,6 +3,7 @@ package com.trackorithm.track.modules.sheet.dto;
 import com.trackorithm.track.common.enums.SheetType;
 import com.trackorithm.track.common.enums.Visibility;
 
+import java.util.List;
 import java.util.UUID;
 
 public record SheetSummaryDto(
@@ -10,7 +11,7 @@ public record SheetSummaryDto(
         String name,
         String description,
         SheetType type,
-        Visibility visibility
+        Visibility visibility,
+        String sourceUrl
 ) {
 }
-

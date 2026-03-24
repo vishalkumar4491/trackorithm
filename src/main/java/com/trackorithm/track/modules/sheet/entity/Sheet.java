@@ -21,6 +21,9 @@ public class Sheet extends BaseEntity {
 
     private String description;
 
+    @Column(name = "source_url")
+    private String sourceUrl;
+
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "type", columnDefinition = "sheet_type_enum")

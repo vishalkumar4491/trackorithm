@@ -20,6 +20,34 @@ public interface SheetRepository extends JpaRepository<Sheet, UUID> {
 
     Page<Sheet> findByTypeAndCreatedById(SheetType type, UUID createdById, Pageable pageable);
 
+    boolean existsByTypeAndNameIgnoreCase(SheetType type, String name);
+
+    boolean existsByTypeAndCreatedBy_IdAndNameIgnoreCase(SheetType type, UUID createdById, String name);
+
+    @Query("""
+            select (count(s) > 0)
+            from Sheet s
+            where s.type = :type
+              and lower(s.name) = lower(:name)
+              and s.id <> :sheetId
+            """)
+    boolean existsOtherSystemSheetWithName(@Param("type") SheetType type,
+                                          @Param("name") String name,
+                                          @Param("sheetId") UUID sheetId);
+
+    @Query("""
+            select (count(s) > 0)
+            from Sheet s
+            where s.type = :type
+              and s.createdBy.id = :userId
+              and lower(s.name) = lower(:name)
+              and s.id <> :sheetId
+            """)
+    boolean existsOtherOwnedSheetWithName(@Param("type") SheetType type,
+                                          @Param("userId") UUID userId,
+                                          @Param("name") String name,
+                                          @Param("sheetId") UUID sheetId);
+
     @Query("""
             select s
             from Sheet s
