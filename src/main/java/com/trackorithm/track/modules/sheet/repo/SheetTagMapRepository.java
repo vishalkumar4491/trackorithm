@@ -34,4 +34,6 @@ public interface SheetTagMapRepository extends JpaRepository<SheetTagMap, SheetT
             where m.sheet.id = :sheetId
             """)
     void deleteBySheetId(@Param("sheetId") UUID sheetId);
+
+    boolean existsBySheet_IdAndTag_Id(UUID sheetId, UUID tagId);
 }

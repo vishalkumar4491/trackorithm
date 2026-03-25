@@ -13,18 +13,13 @@ public interface SheetTagRepository extends JpaRepository<SheetTag, UUID> {
     @Query("""
             select t
             from SheetTag t
-            where t.system = true
-               or (t.system = false and t.createdBy.id = :userId)
             order by t.system desc, lower(t.name) asc
             """)
     List<SheetTag> findVisibleToUser(@Param("userId") UUID userId);
 
     Optional<SheetTag> findByIdAndSystemTrue(UUID id);
 
-    Optional<SheetTag> findByIdAndCreatedBy_Id(UUID id, UUID userId);
+    boolean existsByNameIgnoreCase(String name);
 
-    boolean existsBySystemTrueAndNameIgnoreCase(String name);
-
-    boolean existsBySystemFalseAndCreatedBy_IdAndNameIgnoreCase(UUID createdById, String name);
+    Optional<SheetTag> findFirstByNameIgnoreCase(String name);
 }
-

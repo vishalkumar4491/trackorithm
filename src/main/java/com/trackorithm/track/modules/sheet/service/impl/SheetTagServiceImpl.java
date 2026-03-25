@@ -1,6 +1,5 @@
 package com.trackorithm.track.modules.sheet.service.impl;
 
-import com.trackorithm.track.common.exception.ConflictException;
 import com.trackorithm.track.modules.sheet.dto.CreateSheetTagRequest;
 import com.trackorithm.track.modules.sheet.dto.SheetTagDto;
 import com.trackorithm.track.modules.sheet.entity.SheetTag;
@@ -35,32 +34,26 @@ public class SheetTagServiceImpl implements SheetTagService {
     @Transactional
     public SheetTagDto createUserTag(UUID userId, CreateSheetTagRequest request) {
         String name = normalize(request.name());
-        if (sheetTagRepository.existsBySystemFalseAndCreatedBy_IdAndNameIgnoreCase(userId, name)) {
-            throw new ConflictException("Tag already exists");
-        }
-
-        User owner = userRepository.getReferenceById(userId);
-        SheetTag tag = new SheetTag();
-        tag.setName(name);
-        tag.setSystem(false);
-        tag.setCreatedBy(owner);
-
-        sheetTagRepository.save(tag);
-        return SheetTagMapper.toDto(tag);
+        return sheetTagRepository.findFirstByNameIgnoreCase(name)
+                .map(SheetTagMapper::toDto)
+                .orElseGet(() -> {
+                    User owner = userRepository.getReferenceById(userId);
+                    SheetTag tag = new SheetTag();
+                    tag.setName(name);
+                    tag.setSystem(false);
+                    tag.setCreatedBy(owner);
+                    sheetTagRepository.save(tag);
+                    return SheetTagMapper.toDto(tag);
+                });
     }
 
     @Override
     @Transactional
     public SheetTagDto createSystemTag(UUID adminUserId, CreateSheetTagRequest request) {
         String name = normalize(request.name());
-        if (sheetTagRepository.existsBySystemTrueAndNameIgnoreCase(name)) {
-            throw new ConflictException("Tag already exists");
-        }
-
-        SheetTag tag = new SheetTag();
+        SheetTag tag = sheetTagRepository.findFirstByNameIgnoreCase(name).orElseGet(SheetTag::new);
         tag.setName(name);
         tag.setSystem(true);
-        tag.setCreatedBy(null);
         sheetTagRepository.save(tag);
         return SheetTagMapper.toDto(tag);
     }
@@ -69,4 +62,3 @@ public class SheetTagServiceImpl implements SheetTagService {
         return value == null ? "" : value.trim();
     }
 }
-

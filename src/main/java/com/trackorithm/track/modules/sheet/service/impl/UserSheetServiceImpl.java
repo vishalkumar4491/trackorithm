@@ -110,12 +110,7 @@ public class UserSheetServiceImpl implements UserSheetService {
         if (tags.size() != tagIds.size()) {
             throw new ConflictException("Invalid sheet tags");
         }
-        for (SheetTag t : tags) {
-            boolean ok = t.isSystem() || (t.getCreatedBy() != null && userId.equals(t.getCreatedBy().getId()));
-            if (!ok) {
-                throw new ConflictException("Invalid sheet tags");
-            }
-        }
+        // User sheets can use any existing tag (system or community).
 
         java.util.List<SheetTagMap> maps = new java.util.ArrayList<>(tags.size());
         for (SheetTag t : tags) {
