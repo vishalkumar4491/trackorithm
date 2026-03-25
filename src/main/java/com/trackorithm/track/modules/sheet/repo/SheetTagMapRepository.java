@@ -2,6 +2,7 @@ package com.trackorithm.track.modules.sheet.repo;
 
 import com.trackorithm.track.modules.sheet.entity.SheetTagMap;
 import com.trackorithm.track.modules.sheet.entity.SheetTagMapId;
+import com.trackorithm.track.modules.sheet.entity.SheetTag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,14 @@ public interface SheetTagMapRepository extends JpaRepository<SheetTagMap, SheetT
             """)
     List<UUID> findTagIdsBySheetId(@Param("sheetId") UUID sheetId);
 
+    @Query("""
+            select m.tag
+            from SheetTagMap m
+            where m.sheet.id = :sheetId
+            order by m.tag.system desc, lower(m.tag.name) asc
+            """)
+    List<SheetTag> findTagsBySheetId(@Param("sheetId") UUID sheetId);
+
     @Modifying
     @Query("""
             delete from SheetTagMap m
@@ -26,4 +35,3 @@ public interface SheetTagMapRepository extends JpaRepository<SheetTagMap, SheetT
             """)
     void deleteBySheetId(@Param("sheetId") UUID sheetId);
 }
-

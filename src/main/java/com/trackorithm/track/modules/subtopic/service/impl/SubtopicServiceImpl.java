@@ -154,11 +154,30 @@ public class SubtopicServiceImpl implements SubtopicService {
 
         Subtopic s = subtopicRepository.findById(subtopicId)
                 .orElseThrow(() -> new NotFoundException("Subtopic not found"));
+
         UUID currentTopicId = s.getTopic().getId();
+        requireTopicInSheet(currentTopicId, sheetId);
 
         Topic targetTopic = requireTopicInSheet(request.targetTopicId(), sheetId);
+        Integer requestedPos = request.position();
 
         if (currentTopicId.equals(targetTopic.getId())) {
+            int count = subtopicRepository.countByTopic_Id(currentTopicId);
+            int oldPos = s.getOrderIndex();
+            int newPos = clampPosition(requestedPos, count - 1, oldPos);
+
+            if (newPos == oldPos) {
+                return SubtopicMapper.toDto(s);
+            }
+
+            if (newPos < oldPos) {
+                subtopicRepository.incrementRangeExcluding(currentTopicId, newPos, oldPos, s.getId());
+            } else {
+                subtopicRepository.decrementRangeExcluding(currentTopicId, oldPos, newPos, s.getId());
+            }
+
+            s.setOrderIndex(newPos);
+            subtopicRepository.save(s);
             return SubtopicMapper.toDto(s);
         }
 
@@ -167,9 +186,17 @@ public class SubtopicServiceImpl implements SubtopicService {
             throw new ConflictException("Subtopic already exists in target topic");
         }
 
-        int max = subtopicRepository.findMaxOrderIndexByTopicId(targetTopic.getId());
+        int targetCount = subtopicRepository.countByTopic_Id(targetTopic.getId());
+        int insertPos = clampPositionForInsert(requestedPos, targetCount);
+
+        // Close the gap in the source topic.
+        subtopicRepository.decrementAfter(currentTopicId, s.getOrderIndex());
+
+        // Make room in the target topic.
+        subtopicRepository.incrementFrom(targetTopic.getId(), insertPos);
+
         s.setTopic(targetTopic);
-        s.setOrderIndex(max + 1);
+        s.setOrderIndex(insertPos);
         subtopicRepository.save(s);
         return SubtopicMapper.toDto(s);
     }
@@ -215,5 +242,34 @@ public class SubtopicServiceImpl implements SubtopicService {
         if (a == null && b == null) return true;
         if (a == null || b == null) return false;
         return a.equalsIgnoreCase(b);
+    }
+
+    private static int clampPosition(Integer requested, int maxIndex, int currentIndex) {
+        if (requested == null) {
+            return currentIndex;
+        }
+        if (maxIndex < 0) {
+            return 0;
+        }
+        if (requested < 0) {
+            return 0;
+        }
+        if (requested > maxIndex) {
+            return maxIndex;
+        }
+        return requested;
+    }
+
+    private static int clampPositionForInsert(Integer requested, int size) {
+        if (requested == null) {
+            return size;
+        }
+        if (requested < 0) {
+            return 0;
+        }
+        if (requested > size) {
+            return size;
+        }
+        return requested;
     }
 }
