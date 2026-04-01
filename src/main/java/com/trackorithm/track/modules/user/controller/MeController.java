@@ -1,6 +1,7 @@
 package com.trackorithm.track.modules.user.controller;
 
 import com.trackorithm.track.modules.user.repo.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +13,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
+@AllArgsConstructor
 public class MeController {
     private final UserRepository userRepository;
-
-    public MeController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @GetMapping("/me")
     public Map<String, Object> me(@AuthenticationPrincipal Jwt jwt) {

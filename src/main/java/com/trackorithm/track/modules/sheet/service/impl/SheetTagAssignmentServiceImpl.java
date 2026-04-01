@@ -105,6 +105,9 @@ public class SheetTagAssignmentServiceImpl implements SheetTagAssignmentService 
         if (sheetTagMapRepository.existsById(id)) {
             sheetTagMapRepository.deleteById(id);
         }
+        else{
+            throw new IllegalArgumentException("Tag not linked with sheet");
+        }
         return sheetTagMapRepository.findTagsBySheetId(sheetId).stream().map(SheetTagMapper::toDto).toList();
     }
 

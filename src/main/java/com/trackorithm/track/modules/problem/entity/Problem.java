@@ -3,7 +3,7 @@ package com.trackorithm.track.modules.problem.entity;
 import com.trackorithm.track.common.entity.BaseEntity;
 import com.trackorithm.track.common.enums.Difficulty;
 import com.trackorithm.track.common.enums.Platform;
-import com.trackorithm.track.modules.topic.entity.Topic;
+import com.trackorithm.track.modules.problem.enums.ProblemState;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +13,10 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Table(name = "problems",
         indexes = {
-                @Index(name = "idx_problems_topic_order", columnList = "topic_id, order_index"),
-                @Index(name = "idx_problems_difficulty", columnList = "difficulty")
+                @Index(name = "idx_problems_difficulty", columnList = "difficulty"),
+                @Index(name = "idx_problems_platform", columnList = "platform"),
+                @Index(name = "idx_problems_state", columnList = "state"),
+                @Index(name = "idx_problems_listed", columnList = "is_listed")
         })
 @Getter
 @Setter
@@ -42,5 +44,13 @@ public class Problem extends BaseEntity {
     private Integer frequencyScore;
 
     private Double acceptanceRate;
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "state", columnDefinition = "problem_state_enum")
+    private ProblemState state = ProblemState.ACTIVE;
+
+    @Column(name = "is_listed")
+    private Boolean isListed = false;
 
 }

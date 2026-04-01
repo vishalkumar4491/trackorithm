@@ -19,6 +19,8 @@ public interface SubtopicRepository extends JpaRepository<Subtopic, UUID> {
 
     Optional<Subtopic> findByIdAndTopic_Id(UUID subtopicId, UUID topicId);
 
+    Optional<Subtopic> findByIdAndTopic_Sheet_Id(UUID subtopicId, UUID sheetId);
+
     boolean existsByTopic_IdAndNameIgnoreCase(UUID topicId, String name);
 
     int countByTopic_Id(UUID topicId);
